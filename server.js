@@ -18,30 +18,7 @@ const init = async () => {
         console.error("Error connecting to database" + error);
     });
 
-    // Model
-    const BlogPost = mongoose.model("BlogPost", {
-        title: String,
-        content: String,
-        author: String,
-        createdAt: {
-            type: Date,
-            default: Date.now  
-        } 
-    });
-
-    server.route([
-        {
-            method: "GET",
-            path: "/blogposts",
-            handler: async(request, h) => {
-                try {
-                    return await BlogPost.find();
-                } catch (error) {
-                    return h.response("There was an error" + error).code(500);
-                }
-            }
-        }
-    ])
+    require("./routes/blogpost.route")(server);
 
     await server.start();
     console.log('Server running on %s', server.info.uri);
