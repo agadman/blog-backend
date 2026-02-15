@@ -1,0 +1,42 @@
+const Cookie = require('@hapi/cookie');
+const Jwt = require('@hapi/jwt');
+require('dotenv').config();
+
+module.exports = {
+  register: async (server) => {
+    await server.register([Cookie, Jwt]);
+
+    // Register cookie-strategy
+    server.auth.strategy('session', 'cookie', {
+      cookie: {
+        name: 'jwt',
+        password: process.env.COOKIE_PASSWORD,
+        isSecure: false, // KOM IHÅG ÄNDRA! true i prod (https)
+        ttl: 24 * 60 * 60 * 1000,
+        isSameSite: 'Lax', // KOM IHÅG ÄNDRA! None i prod + secure
+        clearInvalid: true,
+        isHttpOnly: true,
+        path: '/',         
+      },
+      redirectTo: false,   
+      validate: async (request, session) => {
+        try {
+          const token = session;
+          if (!token) return { isValid: false };
+
+          const { decoded } = Jwt.token.decode(token);
+
+          return {
+            isValid: true,
+            credentials: decoded.payload.user
+          };
+        } catch (err) {
+          console.error('Session validation failed:', err);
+          return { isValid: false };
+        }
+      }
+    });
+
+    server.auth.default('session');
+  }
+};

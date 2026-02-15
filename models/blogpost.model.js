@@ -10,8 +10,9 @@ const blogPostSchema = new mongoose.Schema({
     required: [true, "Content is required"]
   },
   author: {
-    type: String,
-    required: [true, "Author is required"]
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   },
   createdAt: {
     type: Date,

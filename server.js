@@ -1,14 +1,23 @@
 'use strict';
 
+require("dotenv").config();
 const Hapi = require('@hapi/hapi');
 const mongoose = require("mongoose");
-require("dotenv").config();
+const auth = require('./auth'); 
 
 const init = async () => {
 
     const server = Hapi.server({
         port: 5001,
-        host: '0.0.0.0'
+        host: '0.0.0.0',
+        routes: {
+        cors: {
+            origin: ['http://localhost:5173', 'https://www.thunderclient.com'],
+            credentials: true,
+            maxAge: 86400,
+            additionalHeaders: ["Accept", "Content-Type", "Access-Control-Allow-Origin"]
+            }
+        }
     });
 
     //connect to Mongodb
@@ -18,7 +27,12 @@ const init = async () => {
         console.error("Error connecting to database" + error);
     });
 
+    // Register JWT auth strategy
+    await auth.register(server);
+
+    // Register routes
     require("./routes/blogpost.route")(server);
+    require('./routes/user.route')(server);
 
     await server.start();
     console.log('Server running on %s', server.info.uri);
