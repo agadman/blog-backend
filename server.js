@@ -8,7 +8,7 @@ const auth = require('./auth');
 const init = async () => {
 
     const server = Hapi.server({
-        port: 5001,
+        port: process.env.PORT || 5001,
         host: '0.0.0.0',
         routes: {
         cors: {
