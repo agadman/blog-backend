@@ -31,8 +31,8 @@ const init = async () => {
     await auth.register(server);
 
     // Register routes
-    require("./routes/blogpost.route")(server);
-    require('./routes/user.route')(server);
+    require("./blog-backend/routes/blogpost.route")(server);
+    require('./blog-backend/routes/user.route')(server);
 
     await server.start();
     console.log('Server running on %s', server.info.uri);

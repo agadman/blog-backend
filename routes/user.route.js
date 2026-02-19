@@ -9,7 +9,7 @@ module.exports = (server) => {
       method: 'POST',
       path: '/auth/register',
       options: {
-        auth: false,  // 🔹 viktigt
+        auth: false,
         validate: {
           payload: Joi.object({
             username: Joi.string().required(),
