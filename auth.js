@@ -11,9 +11,10 @@ module.exports = {
       cookie: {
         name: 'jwt',
         password: process.env.COOKIE_PASSWORD,
-        isSecure: false, // KOM IHÅG ÄNDRA! true i prod (https)
+        //isSecure: false, // Detta är för utveckling, ändra till true i prod (https) eller se nedan
+        isSecure: process.env.NODE_ENV === 'production',
         ttl: 24 * 60 * 60 * 1000,
-        isSameSite: 'Lax', // KOM IHÅG ÄNDRA! None i prod + secure
+        isSameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // None för prod, Lax för utveckling
         clearInvalid: true,
         isHttpOnly: true,
         path: '/',         
