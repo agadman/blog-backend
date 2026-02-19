@@ -40,14 +40,17 @@ exports.loginUser = async (request, h) => {
     const correctPassword = await bcrypt.compare(password, user.password);
     if (!correctPassword) return h.response({ message: 'Invalid email or password' }).code(401);
 
-    const token = generateToken(user);
+const token = generateToken(user);
 
-    return h
-      .response({
-        message: 'Login successful',
-        user: { id: user._id, username: user.username, email: user.email }
-      })
-      .state('jwt', token);
+request.cookieAuth.set({
+  id: user._id.toString(),
+  username: user.username,
+  email: user.email
+});
+
+return h.response({
+  user: { id: user._id, username: user.username, email: user.email }
+});
 
   } catch (error) {
     console.error(error);

@@ -20,21 +20,14 @@ module.exports = {
       },
       redirectTo: false,   
       validate: async (request, session) => {
-        try {
-          const token = session;
-          if (!token) return { isValid: false };
+  if (!session) return { isValid: false };
 
-          const { decoded } = Jwt.token.decode(token);
-
-          return {
-            isValid: true,
-            credentials: decoded.payload.user
-          };
-        } catch (err) {
-          console.error('Session validation failed:', err);
-          return { isValid: false };
-        }
-      }
+  // session är redan ett objekt {id, username, email} från loginUser
+  return {
+    isValid: true,
+    credentials: session
+  };
+}
     });
 
     server.auth.default('session');

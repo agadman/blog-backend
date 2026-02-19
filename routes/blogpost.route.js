@@ -9,6 +9,12 @@ module.exports = (server) => {
             options: { auth: false }
         },
         {
+            method: "GET",
+            path: "/blogposts/mine",
+            handler: blogPostController.getMyBlogPosts,
+            options: { auth: 'session' } 
+        },
+        {
             method: "POST",
             path: "/blogposts",
             handler: blogPostController.addBlogPost,

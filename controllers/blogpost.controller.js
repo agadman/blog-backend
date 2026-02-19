@@ -18,6 +18,16 @@ exports.getBlogPostById = async (request, h) => {
   }
 };
 
+exports.getMyBlogPosts = async (request, h) => {
+  try {
+    const userId = request.auth.credentials.id;
+    const posts = await BlogPost.find({ author: userId }).populate('author', 'username');
+    return posts;
+  } catch (error) {
+    return h.response("Det gick inte att hämta dina bloggar: " + error).code(500);
+  }
+};
+
 exports.addBlogPost = async(request, h) => {
   try {
     const { title, content } = request.payload;
