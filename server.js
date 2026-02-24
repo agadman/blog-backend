@@ -15,7 +15,7 @@ const init = async () => {
             origin: ['http://localhost:5173', 'https://www.thunderclient.com', 'https://elaborate-beijinho-cbb483.netlify.app'],
             credentials: true,
             maxAge: 86400,
-            additionalHeaders: ["Accept", "Content-Type", "Access-Control-Allow-Origin"]
+            additionalHeaders: ["Accept", "Content-Type"]
             }
         }
     });
